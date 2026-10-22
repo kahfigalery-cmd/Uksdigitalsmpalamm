@@ -1,0 +1,6 @@
+{
+  "name": "UKS Digital - SMP Alam Excellentia Pamekasan",
+  "description": "Sistem Informasi dan Administrasi Unit Kesehatan Sekolah (UKS) modern, aman, dan profesional untuk SMP Alam Excellentia Pamekasan.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

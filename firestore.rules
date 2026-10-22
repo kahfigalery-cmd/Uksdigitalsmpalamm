@@ -1,0 +1,84 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default catch-all rule: Deny all by default
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128;
+    }
+
+    // Users collection
+    match /users/{userId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn() && isValidId(userId);
+    }
+
+    // Students collection
+    match /students/{studentId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn() && isValidId(studentId);
+    }
+
+    // Student health information (restricted)
+    match /student_health/{healthId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn() && isValidId(healthId);
+    }
+
+    // UKS Visits
+    match /uks_visits/{visitId} {
+      allow read: if isSignedIn();
+      allow create, update: if isSignedIn() && isValidId(visitId);
+      allow delete: if isSignedIn();
+    }
+
+    // Visit Assessments
+    match /visit_assessments/{assessmentId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn() && isValidId(assessmentId);
+    }
+
+    // Parent Contacts
+    match /parent_contacts/{contactId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn() && isValidId(contactId);
+    }
+
+    // Inventory Items
+    match /inventory_items/{itemId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn() && isValidId(itemId);
+    }
+
+    // Inventory Transactions
+    match /inventory_transactions/{txId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn() && isValidId(txId);
+    }
+
+    // Referrals
+    match /referrals/{referralId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn() && isValidId(referralId);
+    }
+
+    // Activity Logs
+    match /activity_logs/{logId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && isValidId(logId);
+    }
+
+    // School Settings
+    match /school_settings/{settingId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn() && isValidId(settingId);
+    }
+  }
+}

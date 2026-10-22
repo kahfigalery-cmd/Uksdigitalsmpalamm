@@ -1,0 +1,257 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Akun pengguna sistem UKS Digital",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "ID unik pengguna" },
+        "name": { "type": "string", "description": "Nama lengkap pengguna" },
+        "email": { "type": "string", "description": "Email dinas / akun pengguna" },
+        "role": { "type": "string", "enum": ["admin", "petugas_uks", "guru", "kepala_sekolah"], "description": "Hak akses pengguna" },
+        "assignedClass": { "type": "string", "description": "Kelas bimbingan bagi wali kelas" },
+        "phone": { "type": "string", "description": "Nomor kontak telepon/WhatsApp" },
+        "active": { "type": "boolean", "description": "Status aktif akun" },
+        "createdAt": { "type": "string", "description": "Waktu pendaftaran akun" }
+      },
+      "required": ["uid", "name", "email", "role"]
+    },
+    "Student": {
+      "title": "Student",
+      "description": "Data identitas dasar siswa SMP Alam Excellentia Pamekasan",
+      "type": "object",
+      "properties": {
+        "nis": { "type": "string", "description": "Nomor Induk Siswa" },
+        "fullName": { "type": "string", "description": "Nama lengkap siswa" },
+        "gender": { "type": "string", "enum": ["L", "P"], "description": "Jenis kelamin" },
+        "className": { "type": "string", "description": "Tingkat dan nama kelas" },
+        "academicYear": { "type": "string", "description": "Tahun ajaran" },
+        "parentName": { "type": "string", "description": "Nama orang tua atau wali" },
+        "parentPhone": { "type": "string", "description": "Nomor telepon / WA orang tua" },
+        "active": { "type": "boolean", "description": "Status keaktifan siswa" },
+        "emergencyContact": { "type": "string", "description": "Kontak darurat alternatif" },
+        "createdAt": { "type": "string", "description": "Waktu pendaftaran data" }
+      },
+      "required": ["nis", "fullName", "gender", "className", "parentName", "parentPhone"]
+    },
+    "StudentHealthInfo": {
+      "title": "StudentHealthInfo",
+      "description": "Informasi kesehatan penting yang terverifikasi dan bersifat rahasia",
+      "type": "object",
+      "properties": {
+        "nis": { "type": "string", "description": "Nomor Induk Siswa" },
+        "allergies": { "type": "string", "description": "Alergi obat atau makanan terverifikasi" },
+        "medicalNotes": { "type": "string", "description": "Kondisi kesehatan penting yang disampaikan wali" },
+        "specialCareNeeds": { "type": "string", "description": "Catatan kebutuhan pertolongan khusus" },
+        "bloodType": { "type": "string", "description": "Golongan darah jika ada" },
+        "lastUpdated": { "type": "string", "description": "Tanggal pembaruan informasi" },
+        "updatedBy": { "type": "string", "description": "Petugas yang memperbarui" }
+      },
+      "required": ["nis"]
+    },
+    "UksVisit": {
+      "title": "UksVisit",
+      "description": "Catatan kunjungan siswa ke UKS",
+      "type": "object",
+      "properties": {
+        "visitNumber": { "type": "string", "description": "Nomor kunjungan otomatis dan unik" },
+        "studentNis": { "type": "string", "description": "NIS siswa" },
+        "studentName": { "type": "string", "description": "Nama siswa" },
+        "className": { "type": "string", "description": "Kelas siswa saat berkunjung" },
+        "visitDate": { "type": "string", "description": "Tanggal kunjungan (YYYY-MM-DD)" },
+        "entryTime": { "type": "string", "description": "Waktu masuk UKS (HH:mm)" },
+        "exitTime": { "type": "string", "description": "Waktu keluar UKS (HH:mm)" },
+        "accompaniedBy": { "type": "string", "description": "Guru atau teman pengantar" },
+        "incidentLocation": { "type": "string", "description": "Lokasi kejadian jika relevan" },
+        "complaintCategory": { "type": "string", "description": "Kategori keluhan umum" },
+        "complaintDetail": { "type": "string", "description": "Keterangan keluhan yang disampaikan siswa" },
+        "status": {
+          "type": "string",
+          "enum": [
+            "Menunggu pemeriksaan",
+            "Sedang ditangani",
+            "Istirahat atau observasi",
+            "Kembali ke kelas",
+            "Dipulangkan",
+            "Dirujuk",
+            "Penanganan darurat",
+            "Selesai"
+          ],
+          "description": "Status kunjungan saat ini"
+        },
+        "initialAction": { "type": "string", "description": "Pilihan tindakan awal" },
+        "actionDetail": { "type": "string", "description": "Uraian tindakan pertolongan pertama" },
+        "handledBy": { "type": "string", "description": "Nama petugas UKS" },
+        "needsFollowUp": { "type": "boolean", "description": "Apakah membutuhkan tindak lanjut" },
+        "followUpNotes": { "type": "string", "description": "Catatan tindak lanjut" },
+        "followUpStatus": { "type": "string", "enum": ["Belum Ditindaklanjuti", "Dalam Pemantauan", "Selesai"], "description": "Status tindak lanjut" },
+        "dischargedTo": { "type": "string", "description": "Pihak yang menjemput jika dipulangkan" },
+        "dischargeTime": { "type": "string", "description": "Waktu penyerahan siswa ke penjemput" },
+        "medicinesGiven": { "type": "string", "description": "Ringkasan obat bebas/P3K yang diberikan sesuai SOP" },
+        "createdAt": { "type": "string", "description": "Timestamp pembuatan" },
+        "updatedAt": { "type": "string", "description": "Timestamp update terakhir" }
+      },
+      "required": ["visitNumber", "studentNis", "studentName", "className", "visitDate", "entryTime", "complaintCategory", "status"]
+    },
+    "VisitAssessment": {
+      "title": "VisitAssessment",
+      "description": "Pemeriksaan fisik awal dan tanda-tanda vital dasar siswa",
+      "type": "object",
+      "properties": {
+        "visitId": { "type": "string", "description": "ID referensi kunjungan" },
+        "assessmentTime": { "type": "string", "description": "Waktu pemeriksaan" },
+        "generalCondition": { "type": "string", "description": "Kondisi umum siswa" },
+        "consciousness": { "type": "string", "description": "Tingkat kesadaran" },
+        "bodyTemperature": { "type": "string", "description": "Suhu tubuh (°C)" },
+        "pulseRate": { "type": "string", "description": "Denyut nadi (bpm)" },
+        "objectiveObservation": { "type": "string", "description": "Hasil pengamatan objektif petugas" },
+        "examinerName": { "type": "string", "description": "Nama petugas pemeriksa" }
+      },
+      "required": ["visitId"]
+    },
+    "ParentContact": {
+      "title": "ParentContact",
+      "description": "Catatan komunikasi dengan orang tua atau wali siswa",
+      "type": "object",
+      "properties": {
+        "visitId": { "type": "string", "description": "ID kunjungan UKS terkait" },
+        "parentName": { "type": "string", "description": "Nama orang tua / wali" },
+        "contactNumber": { "type": "string", "description": "Nomor telepon / WA yang dihubungi" },
+        "contactDateTime": { "type": "string", "description": "Waktu komunikasi" },
+        "method": { "type": "string", "description": "Metode komunikasi (WhatsApp / Telepon)" },
+        "summary": { "type": "string", "description": "Ringkasan informasi yang disampaikan" },
+        "result": { "type": "string", "description": "Hasil komunikasi atau kesepakatan" },
+        "officerName": { "type": "string", "description": "Nama petugas yang menghubungi" }
+      },
+      "required": ["visitId", "parentName", "contactNumber", "method", "summary"]
+    },
+    "InventoryItem": {
+      "title": "InventoryItem",
+      "description": "Data persediaan obat bebas dan perlengkapan P3K UKS",
+      "type": "object",
+      "properties": {
+        "itemCode": { "type": "string", "description": "Kode unik barang / obat" },
+        "name": { "type": "string", "description": "Nama obat atau barang" },
+        "category": { "type": "string", "enum": ["Obat Bebas & Terbatas", "Perlengkapan P3K", "Alat Kesehatan", "Bahan Medis Habis Pakai"], "description": "Kategori barang" },
+        "unit": { "type": "string", "description": "Satuan (tablet, botol, roll, strip, pcs)" },
+        "stock": { "type": "number", "description": "Jumlah stok tersedia saat ini" },
+        "minStock": { "type": "number", "description": "Batas minimum persediaan" },
+        "expiryDate": { "type": "string", "description": "Tanggal kedaluwarsa (YYYY-MM-DD)" },
+        "batchNumber": { "type": "string", "description": "Nomor batch produksi" },
+        "supplier": { "type": "string", "description": "Sumber / penyedia barang" },
+        "storageLocation": { "type": "string", "description": "Lokasi penyimpanan (Lemari Obat, Kotak P3K, dsb)" },
+        "notes": { "type": "string", "description": "Catatan petunjuk penyimpanan dan pemakaian" },
+        "updatedAt": { "type": "string", "description": "Waktu pembaruan stok" }
+      },
+      "required": ["itemCode", "name", "category", "unit", "stock", "minStock"]
+    },
+    "InventoryTransaction": {
+      "title": "InventoryTransaction",
+      "description": "Riwayat pergerakan stok masuk dan keluar",
+      "type": "object",
+      "properties": {
+        "itemId": { "type": "string", "description": "ID barang terkait" },
+        "itemName": { "type": "string", "description": "Nama barang" },
+        "type": { "type": "string", "enum": ["MASUK", "KELUAR"], "description": "Jenis transaksi" },
+        "quantity": { "type": "number", "description": "Jumlah barang" },
+        "date": { "type": "string", "description": "Tanggal transaksi" },
+        "reason": { "type": "string", "description": "Alasan pergerakan (Pelayanan Kunjungan, Restock, Kedaluwarsa, dll)" },
+        "visitRef": { "type": "string", "description": "Nomor kunjungan jika ada" },
+        "officerName": { "type": "string", "description": "Petugas yang mencatat" }
+      },
+      "required": ["itemId", "type", "quantity", "date", "reason", "officerName"]
+    },
+    "Referral": {
+      "title": "Referral",
+      "description": "Catatan rujukan ke fasilitas kesehatan rujukan",
+      "type": "object",
+      "properties": {
+        "visitId": { "type": "string", "description": "ID kunjungan terkait" },
+        "studentName": { "type": "string", "description": "Nama siswa" },
+        "healthFacility": { "type": "string", "description": "Nama faskes rujukan (misal Puskesmas / RSUD)" },
+        "contactFacility": { "type": "string", "description": "Kontak telepon faskes" },
+        "referralReason": { "type": "string", "description": "Alasan perlunya rujukan faskes" },
+        "accompaniedBy": { "type": "string", "description": "Petugas pendamping / keluarga" },
+        "referralTime": { "type": "string", "description": "Waktu keberangkatan rujukan" },
+        "handoverNotes": { "type": "string", "description": "Catatan serah terima ke pihak fasilitas kesehatan" }
+      },
+      "required": ["visitId", "healthFacility", "referralReason", "referralTime"]
+    },
+    "ActivityLog": {
+      "title": "ActivityLog",
+      "description": "Audit log aktivitas sistem UKS",
+      "type": "object",
+      "properties": {
+        "userName": { "type": "string", "description": "Nama pengguna pelaku aksi" },
+        "role": { "type": "string", "description": "Peran pengguna" },
+        "action": { "type": "string", "description": "Aksi yang dilakukan" },
+        "entity": { "type": "string", "description": "Entitas yang diubah" },
+        "details": { "type": "string", "description": "Keterangan rincian aktivitas" },
+        "timestamp": { "type": "string", "description": "Waktu aktivitas" }
+      },
+      "required": ["userName", "action", "entity", "timestamp"]
+    },
+    "SchoolSetting": {
+      "title": "SchoolSetting",
+      "description": "Konfigurasi identitas UKS dan kontak darurat sekolah",
+      "type": "object",
+      "properties": {
+        "schoolName": { "type": "string", "description": "Nama sekolah" },
+        "uksName": { "type": "string", "description": "Nama unit UKS" },
+        "address": { "type": "string", "description": "Alamat sekolah" },
+        "phone": { "type": "string", "description": "Telepon kantor / UKS" },
+        "headmaster": { "type": "string", "description": "Nama kepala sekolah" },
+        "uksCoordinator": { "type": "string", "description": "Koordinator UKS" },
+        "emergencyContacts": { "type": "string", "description": "Daftar kontak darurat penting Pamekasan" },
+        "updatedAt": { "type": "string", "description": "Waktu pembaruan" }
+      },
+      "required": ["schoolName", "uksName"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Koleksi data akun pengguna sistem UKS"
+    },
+    "/students/{studentId}": {
+      "schema": "Student",
+      "description": "Koleksi data pokok siswa"
+    },
+    "/student_health/{healthId}": {
+      "schema": "StudentHealthInfo",
+      "description": "Koleksi informasi kesehatan terbatas siswa"
+    },
+    "/uks_visits/{visitId}": {
+      "schema": "UksVisit",
+      "description": "Koleksi pencatatan kunjungan UKS"
+    },
+    "/visit_assessments/{assessmentId}": {
+      "schema": "VisitAssessment",
+      "description": "Koleksi hasil observasi tanda vital kunjungan"
+    },
+    "/parent_contacts/{contactId}": {
+      "schema": "ParentContact",
+      "description": "Koleksi komunikasi orang tua/wali"
+    },
+    "/inventory_items/{itemId}": {
+      "schema": "InventoryItem",
+      "description": "Koleksi obat dan perlengkapan P3K UKS"
+    },
+    "/inventory_transactions/{txId}": {
+      "schema": "InventoryTransaction",
+      "description": "Koleksi mutasi stok obat/P3K"
+    },
+    "/referrals/{referralId}": {
+      "schema": "Referral",
+      "description": "Koleksi rujukan fasilitas kesehatan"
+    },
+    "/activity_logs/{logId}": {
+      "schema": "ActivityLog",
+      "description": "Koleksi riwayat audit aktivitas pengguna"
+    },
+    "/school_settings/{settingId}": {
+      "schema": "SchoolSetting",
+      "description": "Koleksi konfigurasi sekolah dan kontak darurat"
+    }
+  }
+}
